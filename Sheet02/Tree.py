@@ -31,7 +31,12 @@ class DecisionTree():
     # provide your implementation
     # should return feature response for all input patches
     def getFeatureResponse(self, patches, feature):
-        pass
+        responses = []
+        for patch in patches:
+            x,y = self.generate_random_pixel_location()
+            response = patch[x][y][feature]
+            responses.append(response)
+        return responses
 
     # Function to get left/right split given feature responses and a threshold
     # provide your implementation
@@ -43,22 +48,39 @@ class DecisionTree():
     # provide your implementation
     # should return a random location inside the patch
     def generate_random_pixel_location(self):
-        pass
+        patch_size = self.patches.shape[0]
+        
+        return np.random.randint(0,patch_size) , np.random.randint(0,patch_size) 
 
     # Function to compute entropy over incoming class labels
     # provide your implementation
     def compute_entropy(self, labels):
-        pass
+        l = np.array(labels)
+        n = l.size
+        classes = self.classes
+        Sum =0
+        for c in classes:
+            p = np.sum(l == c) / n
+            Sum-= p * np.log2(p)
+            
+        return Sum
 
     # Function to measure information gain for a given split
     # provide your implementation
     def get_information_gain(self, Entropyleft, Entropyright, EntropyAll, Nall, Nleft, Nright):
-        pass
+        return EntropyAll - Entropyleft * Nleft / Nall - Entropyright * Nright / Nall
 
     # Function to get the best split for given patches with labels
     # provide your implementation
     # should return left,right split, color, pixel location and threshold
     def best_split(self, patches, labels):
+        #get responses
+        # divide left and right (according to what?)
+        # compute entroy of all, left and right
+        # get_info_gain
+        # choose split according to gain
+        
+        # return (left_patches,left_labels) , (right_batches, right_labels) , color , pixel_location , threshold
         pass
 
     # feel free to add any helper functions
