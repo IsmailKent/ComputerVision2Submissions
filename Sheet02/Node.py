@@ -13,12 +13,23 @@ class Node():
     # Function to create a new split node
     # provide your implementation
     def create_SplitNode(self, leftchild, rightchild, feature):
-        pass
+       node = Node()
+       node.leftChild = leftchild
+       node.rightChild = rightchild
+       node.feature = feature
+       return node
 
     # Function to create a new leaf node
     # provide your implementation
     def create_leafNode(self, labels, classes):
-        pass
+        node = Node()
+        p = [None] * len(classes)
+        for c in classes:
+            p[c] = np.sum(labels==c)
+        p /= np.sum(p)
+        node.probabilities = p
+        
+        return node
 
 
     # feel free to add any helper functions

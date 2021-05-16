@@ -1,6 +1,6 @@
 import numpy as np
 from Node import Node
-# from Sampler import PatchSampler
+from Sampler import PatchSampler
 
 
 class DecisionTree():
@@ -14,12 +14,32 @@ class DecisionTree():
         self.minimum_patches_at_leaf = tree_param['minimum_patches_at_leaf']
         self.classes = tree_param['classes']
         self.nodes = []
-
+        
+        self.generate_random_pixel_location()
+        self.generate_random_threshold_values()
+        self.generate_random_color_values()
+        
+        # since for some reason node creation is instance functions
+        self.creator = Node()
+        
     # Function to train the tree
     # provide your implementation
     # should return a trained tree with provided tree param
     def train(self):
-        pass
+        root = self.train_helper(self.patches,self.labels, self.depth)
+        return root
+    
+    def train_helper(self, patches, labels, depth):
+        if (depth==0):
+            return self.creator.create_leafNode(labels,self.classes)
+        best_left,best_right, color, pixel_location, th = self.best_split(patches, labels)
+        left_node = self.train_helper(patches[best_left], labels[best_left()], depth-1)
+        right_node =  self.train_helper(patches[best_left], labels[best_left()], depth-1)
+        feature = {'color': color, 'pixel_location': pixel_location , 'th':th}
+        node = self.creator(left_node , right_node, feature)
+        return node
+        
+        
 
     # Function to predict probabilities for single image
     # provide your implementation
@@ -31,11 +51,17 @@ class DecisionTree():
     # provide your implementation
     # should return feature response for all input patches
     def getFeatureResponse(self, patches, feature):
+        
+        #from node class
+        # feature = {'color': -1, 'pixel_location': [-1, -1], 'th': -1}
+
+        x , y = feature["pixel_location"]
+        color = feature["color"]
+        threshold = feature["th"]
         responses = []
         for patch in patches:
-            x,y = self.generate_random_pixel_location()
-            response = patch[x][y][feature]
-            responses.append(response)
+            responses.append(patch[x][y][color] > threshold)
+            
         return responses
 
     # Function to get left/right split given feature responses and a threshold
@@ -49,8 +75,23 @@ class DecisionTree():
     # should return a random location inside the patch
     def generate_random_pixel_location(self):
         patch_size = self.patches.shape[0]
+        random_locations = []
+        while(len(self.random_locations) < 100):
+            random_locations.append( ( np.random.randint(0,patch_size) , np.random.randint(0,patch_size) ))
+        self.pixel_locations = random_locations
         
-        return np.random.randint(0,patch_size) , np.random.randint(0,patch_size) 
+    def generate_random_threshold_values(self):
+        threshold_values = []
+        while (len(threshold_values)<50):
+            threshold_values.append( np.random.randint(0,256))
+        self.no_of_thresholds = threshold_values
+        
+    def generate_random_color_values(self):
+        color_values = []
+        while (len(color_values)<10):
+            color_values.append(np.random.randint(0,3))
+        self.random_color_values = color_values
+         
 
     # Function to compute entropy over incoming class labels
     # provide your implementation
@@ -74,14 +115,32 @@ class DecisionTree():
     # provide your implementation
     # should return left,right split, color, pixel location and threshold
     def best_split(self, patches, labels):
-        #get responses
-        # divide left and right (according to what?)
-        # compute entroy of all, left and right
-        # get_info_gain
-        # choose split according to gain
-        
-        # return (left_patches,left_labels) , (right_batches, right_labels) , color , pixel_location , threshold
-        pass
-
+        best_gain = -1
+        best_split_feature =  {'color': -1, 'pixel_location': [-1, -1], 'th': -1}
+        entropyAll = self.compute_entropy(labels)
+        best_left = None
+        best_right = None
+        for c in self.random_color_values:
+            for x,y in self.pixel_locations:
+                for th in self.no_of_thresholds:
+                    #from node class
+                    # feature = {'color': -1, 'pixel_location': [-1, -1], 'th': -1}
+                    feature = {'color': c, 'pixel_location': [x,y] , 'th':th}
+                    responses = self.getFeatureResponse(patches,feature)
+                    indices_left = responses == False
+                    indices_right = responses == True
+                    labels_left = labels[indices_left]
+                    labels_right = labels[indices_right]
+                    entropyLeft = self.compute_entropy(labels_left)
+                    entropyRight = self.compute_entropy(labels_right)
+                    gain = self.get_information_gain(entropyLeft,entropyRight,entropyAll, len(labels), len(labels_left), len(labels_right))
+                    if (gain>best_gain):
+                        best_gain = gain
+                        best_split_feature = feature
+                        best_left = indices_left
+                        best_right = indices_right
+                        
+                            
+        return best_left,best_right, best_split_feature['color'], best_split_feature['pixel_location'], best_split_feature['th']
     # feel free to add any helper functions
 
