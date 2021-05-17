@@ -24,11 +24,12 @@ class Node():
     def create_leafNode(self, labels, classes):
         node = Node()
         p = [None] * len(classes)
+        labels = np.array(labels)
         for c in classes:
             p[c] = np.sum(labels==c)
         p /= np.sum(p)
         node.probabilities = p
-        
+        print(node.probabilities)
         return node
 
 

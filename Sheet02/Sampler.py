@@ -14,6 +14,7 @@ class PatchSampler():
     # should return extracted patches with labels
     def extractpatches(self):
         patches = []
+        labels = []
         train = self.train_images_list
         gt = self.gt_segmentation_maps_list
         classes = self.class_colors
@@ -36,9 +37,10 @@ class PatchSampler():
                     seg_patch = segmentation[x-patch_size:x, y-patch_size:y]
                     print( np.sum(seg_patch==c) == patch_size*patch_size*3)
                     """
-                    patches.append((image_patch, c))
+                    patches.append(image_patch)
+                    labels.append(c)
         np.random.shuffle(patches)            
-        return  patches
+        return  patches , labels
 
     # function using dynamic programming to get the first square 
     #of 1s of size patch_size given a binary matrix
@@ -51,7 +53,7 @@ class PatchSampler():
             for j in range(1,y+1):
                 if (matrix[i-1][j-1][0]):
                     dp[i][j] = min(min(dp[i][j - 1], dp[i - 1][j]), dp[i - 1][j - 1]) + 1
-                    if (dp[i][j]== patch_size):
+                    if (dp[i][j]>= patch_size):
                         positions.append( ( i,j ))
                 
      # not found
