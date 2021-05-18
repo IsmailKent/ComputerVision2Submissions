@@ -71,7 +71,7 @@ class DecisionTree():
         # if node is leaf node return value
         
         if (node.leftChild == -1):
-            print(np.argmax(node.probabilities))
+            print("predicted ",np.argmax(node.probabilities))
             return  np.argmax(node.probabilities)
         
         response = self.getFeatureResponse([patch], node.feature)[0]

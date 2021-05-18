@@ -33,10 +33,10 @@ def main():
     sampler = PatchSampler(train_images, train_segmentations, range(4), 16)
     # list of (patch, class) pairs
     training_patches , training_labels = sampler.extractpatches()
-    
+
     tree_parameters = {'depth': 20 , 'minimum_patches_at_leaf':20, 'classes': range(4)}
     
-    stand_alone_tree = DecisionTree(training_patches, training_labels, tree_parameters)
+    stand_alone_tree = DecisionTree(training_patches[:1000], training_labels[:1000], tree_parameters)
     stand_alone_tree.train()
     
     prediction = stand_alone_tree.predict(train_images[3])

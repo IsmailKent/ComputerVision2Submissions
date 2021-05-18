@@ -27,6 +27,7 @@ class Node():
         labels = np.array(labels)
         for c in classes:
             p[c] = np.sum(labels==c)
+            print("p of c", p[c])
         p /= np.sum(p)
         node.probabilities = p
         print(node.probabilities)

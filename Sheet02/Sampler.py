@@ -39,8 +39,9 @@ class PatchSampler():
                     """
                     patches.append(image_patch)
                     labels.append(c)
-        np.random.shuffle(patches)            
-        return  patches , labels
+                    
+        permutation = np.random.permutation(len(patches))          
+        return  np.array(patches)[permutation] , np.array(labels)[permutation]
 
     # function using dynamic programming to get the first square 
     #of 1s of size patch_size given a binary matrix
