@@ -43,8 +43,8 @@ class PatchSampler():
         permutation = np.random.permutation(len(patches))          
         return  np.array(patches)[permutation] , np.array(labels)[permutation]
 
-    # function using dynamic programming to get the first square 
-    #of 1s of size patch_size given a binary matrix
+    # function using dynamic programming to get each square 
+    #of 1s/Trues of size patch_size given a binary matrix
     # return rights lower corner
     def get_positions_of_patch(self,matrix,patch_size):
         x,y , _ = matrix.shape
@@ -57,7 +57,7 @@ class PatchSampler():
                     if (dp[i][j]>= patch_size):
                         positions.append( ( i,j ))
                 
-     # not found
+     
         return positions
 
 

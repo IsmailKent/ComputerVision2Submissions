@@ -64,7 +64,6 @@ class DecisionTree():
                 patch = I[i:i+patch_size,j:j+patch_size]
                 prediction = self.traverse_tree(self.root, patch)
                 predictions[i][j]=prediction
-                     
         return predictions
     
     def traverse_tree(self,node, patch):

@@ -1,0 +1,5 @@
+The data set is unbalanced because Grass is the most dominant label, which makes the probability of it coming always high.
+
+Splitting over one channel at a time is prone to errors because colors can include mixes of different channels, so even some shade of brown can have up to values of 128 of blue, this is a problem that is migitated by majority vote.
+
+Majority vote also eleminates noise. 
