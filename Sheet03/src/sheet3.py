@@ -16,8 +16,8 @@ my_svm_filename = '../my_pretrained_svm.dat' # the file to which you save the tr
 
 #data paths
 test_images_1 = '../data/task_1_testImages/'
-path_train_2 = '../data/task_2_3_Data/01Train/'
-path_test_2 = '../data/task_2_3_Data/02Test/'
+path_train_2 = '../data/task_2_3_Data/train/'
+path_test_2 = '../data/task_2_3_Data/test/'
 
 #***********************************************************************************
 # draw a bounding box in a given image
@@ -101,6 +101,34 @@ def task1():
     cv.waitKey(0)
 
 
+# return 64x128 crop from center of image
+def get_pos_crop(image):
+    h , w , _ = image.shape
+    
+    start_w = w//2 - 64//2
+    finish_w = w//2 + 64//2
+    
+    start_h = h//2 - 128//2
+    finish_h = h//2 +  128//2
+    
+    return image[start_h:finish_h, start_w:finish_w]
+
+# return 10 128x64 crops from random locations 
+def get_neg_crops(image):
+    crops = []
+    h , w , _ = image.shape
+    
+    for _ in range(10):
+    
+        start1 = random.randint(0,h-128)
+        start2 = random.randint(0,w-64)
+        finish1= start1 + 128
+        finish2 = start2 + 64
+        
+        crops.append(image[start1:finish1, start2:finish2])
+    
+    return crops
+
 def task2():
 
     print('Task 2 - Extract HOG features')
@@ -112,6 +140,47 @@ def task2():
   
     filelist_train_pos = path_train_2 + 'filenamesTrainPos.txt'
     filelist_train_neg = path_train_2 + 'filenamesTrainNeg.txt'
+    
+    pos_file = open(filelist_train_pos,'r')
+    neg_file = open(filelist_train_neg,'r')
+
+    
+    pos_HoGs = []
+    neg_HoGs = []
+    
+    hog_dscr = cv.HOGDescriptor()
+    hog_dscr2 = cv.HOGDescriptor()
+
+    for i , line in enumerate(pos_file):
+        image_name  = path_train_2 +'/pos/'+line.rstrip('\n') 
+        img = cv.imread(image_name)
+        crop = get_pos_crop(img)
+        hog = hog_dscr.compute(crop)
+        pos_HoGs.append(hog)
+    pos_file.close()
+    
+    for i , line in enumerate(neg_file):
+        # remove end of line char
+        image_name  = path_train_2 +'/neg/'+line.rstrip('\n') 
+        img = cv.imread(image_name)
+        HoGs = []
+        crops = get_neg_crops(img)
+        for c in crops:
+
+
+            hog = hog_dscr2.compute(c)
+            HoGs.append(hog)
+
+        neg_HoGs+=HoGs
+
+        
+    neg_file.close()
+    
+       
+    print(len(pos_HoGs))
+    print(len(neg_HoGs))
+    
+    
     # TODO: Create a HOG descriptor object to extract the features from the set of positive and negative samples 
 
     # positive samples: Get a crop of size 64*128 at the center of the image then extract its HOG features
@@ -161,10 +230,10 @@ def task5():
 if __name__ == "__main__":
 
     # Task 1 - OpenCV HOG
-    task1()
+    #task1()
 
     # Task 2 - Extract HOG Features
-    #task2()
+    task2()
 
     # Task 3 - Train SVM
     #task3()
