@@ -129,6 +129,15 @@ def get_neg_crops(image):
     
     return crops
 
+    
+    # TODO: Create a HOG descriptor object to extract the features from the set of positive and negative samples 
+
+    # positive samples: Get a crop of size 64*128 at the center of the image then extract its HOG features
+    # negative samples: Sample 10 crops from each negative sample at random and then extract their HOG features
+    # In total you should have  (x+10*y) training samples represented as HOG features(x=number of positive images, y=number of negative images),
+    # save them and their labels in the path train_hog_path and train_labels in order to load them in section 3 
+
+
 def task2():
 
     print('Task 2 - Extract HOG features')
@@ -180,13 +189,22 @@ def task2():
     print(len(pos_HoGs))
     print(len(neg_HoGs))
     
+    hog_file = open(train_hog_path, "a")
+    label_file = open(train_labels, "a")
     
-    # TODO: Create a HOG descriptor object to extract the features from the set of positive and negative samples 
+    for hog in pos_HoGs:
+        print(np.array2string(hog, separator=',',suppress_small=True), file=hog_file)
+        print('1', file=label_file)
 
-    # positive samples: Get a crop of size 64*128 at the center of the image then extract its HOG features
-    # negative samples: Sample 10 crops from each negative sample at random and then extract their HOG features
-    # In total you should have  (x+10*y) training samples represented as HOG features(x=number of positive images, y=number of negative images),
-    # save them and their labels in the path train_hog_path and train_labels in order to load them in section 3 
+    
+    for hog in neg_HoGs:
+        print(np.array2string(hog, separator=',',suppress_small=True), file=hog_file)
+        print('0', file=label_file)
+    
+    hog_file.close()
+    label_file.close()
+    
+    
 
 
 
