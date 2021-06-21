@@ -20,7 +20,9 @@ class ShallowModel(nn.Module):
        super(ShallowModel, self).__init__()
        self.conv_layers = nn.Sequential(
            nn.Conv2d(1, 10, kernel_size=3,stride=1, padding=0),
+           nn.ReLU(inplace=True),
            nn.Conv2d(10, 20, kernel_size=3, stride=1, padding=0),
+           nn.ReLU(inplace=True),
            nn.MaxPool2d(kernel_size=2,stride=2),
 
        )
@@ -37,10 +39,14 @@ class ShallowModel(nn.Module):
 class WiderModel(nn.Module):
    def __init__(self):
        super(WiderModel, self).__init__()
-       self.conv1 = nn.Conv2d(1, 10, kernel_size=3,stride=1, padding=0)
-       self.conv2 = nn.Conv2d(1, 10, kernel_size=3,stride=1, padding=0)
-       self.conv3 = nn.Conv2d(1, 10, kernel_size=3,stride=1, padding=0)
-       self.conv4 = nn.Conv2d(1, 10, kernel_size=3,stride=1, padding=0)
+       self.conv1 = nn.Sequential(nn.Conv2d(1, 10, kernel_size=3,stride=1, padding=0),
+                                  nn.ReLU(inplace=True))
+       self.conv2 = nn.Sequential(nn.Conv2d(1, 10, kernel_size=3,stride=1, padding=0),
+                                  nn.ReLU(inplace=True))
+       self.conv3 = nn.Sequential(nn.Conv2d(1, 10, kernel_size=3,stride=1, padding=0),
+                                  nn.ReLU(inplace=True))
+       self.conv4 = nn.Sequential(nn.Conv2d(1, 10, kernel_size=3,stride=1, padding=0),
+                                  nn.ReLU(inplace=True))
        
        self.max_pool =  nn.MaxPool2d(kernel_size=2,stride=2)
        
@@ -66,28 +72,37 @@ class DeeperModel(nn.Module):
        if (not batchNorm):
            self.conv_layers = nn.Sequential(
                nn.Conv2d(1, 10, kernel_size=3,stride=1, padding=0),
+               nn.ReLU(inplace=True),
                nn.Conv2d(10, 20, kernel_size=3, stride=1, padding=0),
+               nn.ReLU(inplace=True),
                nn.MaxPool2d(kernel_size=2,stride=2),
                nn.Conv2d(20, 40, kernel_size=3,stride=1, padding=0),
+               nn.ReLU(inplace=True),
                nn.Conv2d(40, 80, kernel_size=3, stride=1, padding=0),
+               nn.ReLU(inplace=True),
                nn.MaxPool2d(kernel_size=2,stride=2),
            )
        else:
            self.conv_layers = nn.Sequential(
                nn.Conv2d(1, 10, kernel_size=3,stride=1, padding=0),
+               nn.ReLU(inplace=True),
                       torch.nn.BatchNorm2d(10, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),
                nn.Conv2d(10, 20, kernel_size=3, stride=1, padding=0),
+               nn.ReLU(inplace=True),
                                      torch.nn.BatchNorm2d(20, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),
                nn.MaxPool2d(kernel_size=2,stride=2),
                nn.Conv2d(20, 40, kernel_size=3,stride=1, padding=0),
+               nn.ReLU(inplace=True),
                                      torch.nn.BatchNorm2d(40, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),
                nn.Conv2d(40, 80, kernel_size=3, stride=1, padding=0),
+               nn.ReLU(inplace=True),
                                      torch.nn.BatchNorm2d(80, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),
                nn.MaxPool2d(kernel_size=2,stride=2),
            )
        
        self.fully_connected_layers = nn.Sequential(
            nn.Linear(80*4*4, 200),
+           nn.ReLU(inplace=True),
            nn.Linear(200, 10)
            )
 
@@ -118,12 +133,12 @@ def main():
 
 
     ### Create Model
-    #model = ShallowModel()
+    model = ShallowModel()
 
     #model = WiderModel()
     
     #model = DeeperModel(batchNorm=False)
-    model = DeeperModel(batchNorm=True)
+    #model = DeeperModel(batchNorm=True)
 
     ### Define Opitmizer
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
@@ -134,6 +149,7 @@ def main():
         criterion  = torch.nn.CrossEntropyLoss()
         avg_epoch_loss = 0
         print("Starting Epoch {}".format(epoch+1))
+        i=0
         for data,labels in train_loader:
             optimizer.zero_grad()
             predictions = model(data)  
@@ -141,7 +157,9 @@ def main():
             loss.backward()
             optimizer.step()
             batch_loss = loss.item()
-            print("current batch loss: {}".format(batch_loss))
+            i+=1
+            if (i%100==0):
+                print("current batch loss: {}".format(batch_loss))
             avg_epoch_loss+=batch_loss
         avg_epoch_loss/= len(train_loader)
         print("Average loss this epoch: {}".format(avg_epoch_loss))
@@ -153,14 +171,12 @@ def main():
     torch.save(model.state_dict(), './model')
 
     ## Test
+    model.eval()
     total_right = 0
     for data, labels in test_loader:
         predictions = model(data)
         predicted_classes = torch.argmax(predictions, dim=1)
         predicted_correct = torch.sum(labels == predicted_classes)
-        print(predicted_classes)
-        print(labels)
-        print(predicted_correct)
         total_right+=predicted_correct
     acc = total_right / (len(test_loader)*batch_size)
     print("Model accuracy on test set is: {}".format(acc))

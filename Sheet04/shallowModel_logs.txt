@@ -1,0 +1,111 @@
+Starting Epoch 1
+current batch loss: 1.1855385303497314
+current batch loss: 0.6876422166824341
+current batch loss: 0.47851791977882385
+current batch loss: 0.35934019088745117
+current batch loss: 0.3540617525577545
+current batch loss: 0.3674481511116028
+current batch loss: 0.2994302213191986
+current batch loss: 0.3924531936645508
+current batch loss: 0.17962346971035004
+Average loss this epoch: 0.5632099208157899
+Starting Epoch 2
+current batch loss: 0.1613074392080307
+current batch loss: 0.2988629639148712
+current batch loss: 0.2123139202594757
+current batch loss: 0.26168209314346313
+current batch loss: 0.20282785594463348
+current batch loss: 0.23666371405124664
+current batch loss: 0.16599512100219727
+current batch loss: 0.21939539909362793
+current batch loss: 0.09050359576940536
+Average loss this epoch: 0.2221878744216997
+Starting Epoch 3
+current batch loss: 0.12116389721632004
+current batch loss: 0.18268738687038422
+current batch loss: 0.11438827216625214
+current batch loss: 0.20847097039222717
+current batch loss: 0.1665751338005066
+current batch loss: 0.18860642611980438
+current batch loss: 0.10137733817100525
+current batch loss: 0.11621817201375961
+current batch loss: 0.05109619349241257
+Average loss this epoch: 0.14955285125310774
+Starting Epoch 4
+current batch loss: 0.10803309082984924
+current batch loss: 0.1174684688448906
+current batch loss: 0.06618525087833405
+current batch loss: 0.17914067208766937
+current batch loss: 0.16124467551708221
+current batch loss: 0.1616050750017166
+current batch loss: 0.07047858834266663
+current batch loss: 0.07005340605974197
+current batch loss: 0.03321409225463867
+Average loss this epoch: 0.10995401122343185
+Starting Epoch 5
+current batch loss: 0.1002507284283638
+current batch loss: 0.08289600908756256
+current batch loss: 0.04316588491201401
+current batch loss: 0.1628490388393402
+current batch loss: 0.15695622563362122
+current batch loss: 0.14046378433704376
+current batch loss: 0.05344446748495102
+current batch loss: 0.049694109708070755
+current batch loss: 0.023949556052684784
+Average loss this epoch: 0.08777296899615336
+Starting Epoch 6
+current batch loss: 0.09251556545495987
+current batch loss: 0.06346699595451355
+current batch loss: 0.030172619968652725
+current batch loss: 0.15523146092891693
+current batch loss: 0.15184910595417023
+current batch loss: 0.12330523133277893
+current batch loss: 0.04146011546254158
+current batch loss: 0.039382945746183395
+current batch loss: 0.019391415640711784
+Average loss this epoch: 0.07411068158253019
+Starting Epoch 7
+current batch loss: 0.08546967804431915
+current batch loss: 0.051799338310956955
+current batch loss: 0.02164660580456257
+current batch loss: 0.15231135487556458
+current batch loss: 0.1445056051015854
+current batch loss: 0.11039381474256516
+current batch loss: 0.03215532749891281
+current batch loss: 0.03377388045191765
+current batch loss: 0.017060868442058563
+Average loss this epoch: 0.06487377214435139
+Starting Epoch 8
+current batch loss: 0.08038593828678131
+current batch loss: 0.044286925345659256
+current batch loss: 0.01612580195069313
+current batch loss: 0.15188387036323547
+current batch loss: 0.13761992752552032
+current batch loss: 0.10123210400342941
+current batch loss: 0.0250016450881958
+current batch loss: 0.03028360940515995
+current batch loss: 0.015444857999682426
+Average loss this epoch: 0.058185135771799436
+Starting Epoch 9
+current batch loss: 0.07626202702522278
+current batch loss: 0.03902169317007065
+current batch loss: 0.012473619543015957
+current batch loss: 0.15265366435050964
+current batch loss: 0.13117820024490356
+current batch loss: 0.0949086993932724
+current batch loss: 0.019639799371361732
+current batch loss: 0.02795337699353695
+current batch loss: 0.014226182363927364
+Average loss this epoch: 0.05305201716352202
+Starting Epoch 10
+current batch loss: 0.07205739617347717
+current batch loss: 0.03543142229318619
+current batch loss: 0.009895013645291328
+current batch loss: 0.15339696407318115
+current batch loss: 0.12550599873065948
+current batch loss: 0.09028790891170502
+current batch loss: 0.01573888212442398
+current batch loss: 0.02582939900457859
+current batch loss: 0.013172591105103493
+Average loss this epoch: 0.04895499101189622
+Model accuracy on test set is: 0.9781050682067871
